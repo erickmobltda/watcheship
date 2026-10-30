@@ -1,0 +1,25 @@
+/* Watcheship: graphite and steel with a gold accent. The core reads only these variables (tailwind.config.ts). */
+:root, .dark {
+  --background: 220 14% 7%;
+  --foreground: 210 20% 93%;
+  --card: 220 12% 10%;
+  --card-foreground: 210 20% 93%;
+  --primary: 43 74% 56%;
+  --primary-foreground: 220 20% 8%;
+  --secondary: 215 16% 40%;
+  --secondary-foreground: 210 20% 96%;
+  --muted: 220 10% 16%;
+  --muted-foreground: 215 10% 64%;
+  --accent: 199 60% 50%;
+  --accent-foreground: 210 20% 96%;
+  --destructive: 0 70% 55%;
+  --destructive-foreground: 0 0% 98%;
+  --success: 142 55% 45%;
+  --success-foreground: 0 0% 100%;
+  --border: 220 10% 18%;
+  --input: 220 10% 18%;
+  --ring: 43 74% 56%;
+  --radius: 0.75rem;
+  --font-display: 'Space Grotesk';
+  --font-sans: 'Inter';
+}

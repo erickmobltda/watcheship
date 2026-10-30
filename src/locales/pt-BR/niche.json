@@ -1,0 +1,66 @@
+{
+  "brand": {
+    "name": "Watcheship",
+    "tagline": "Descubra, avalie e colecione relógios."
+  },
+  "owned": {
+    "title": "Caixa de relógios",
+    "subtitle": "Os relógios que você tem, os que quer e os que já usou.",
+    "add": "Pôr na caixa",
+    "remove": "Tirar da caixa",
+    "inList_one": "Na sua caixa",
+    "inList_other": "Na sua caixa",
+    "showOnProfile": "Mostrar minha caixa de relógios no perfil",
+    "empty": "Sua caixa de relógios está vazia.",
+    "hiddenNote": "Sua caixa de relógios está oculta para os outros. Ative em Caixa de relógios ou Configurações."
+  },
+  "attr": {
+    "brand": "Marca",
+    "model": "Modelo",
+    "reference": "Referência",
+    "movement": "Movimento",
+    "caseSize": "Tamanho da caixa",
+    "caseMaterial": "Material da caixa",
+    "waterResistance": "Resistência à água",
+    "complications": "Complicações",
+    "year": "Ano"
+  },
+  "enum": {
+    "movement": {
+      "automatic": "Automático",
+      "manual": "Corda manual",
+      "quartz": "Quartzo",
+      "spring_drive": "Spring Drive",
+      "solar": "Solar"
+    }
+  },
+  "tag": {
+    "design": "Design",
+    "finishing": "Acabamento",
+    "legibility": "Legibilidade",
+    "comfort": "Conforto",
+    "accuracy": "Precisão",
+    "durability": "Durabilidade",
+    "value": "Custo-benefício",
+    "versatile": "Versátil",
+    "dressy": "Social",
+    "sporty": "Esportivo",
+    "everyday": "Uso diário",
+    "heirloom": "Herança"
+  },
+  "extra": {
+    "fullSet": {
+      "label": "Caixa e documentos"
+    }
+  },
+  "experiencedOn": "Usado desde",
+  "discover": {
+    "subtitle_one": "{{count}} relógio no catálogo",
+    "subtitle_other": "{{count}} relógios no catálogo",
+    "placeholder": "Busque por nome, marca, referência, material…"
+  },
+  "feed": {
+    "subtitle": "O que o pessoal está usando."
+  },
+  "credits": "Catálogo de exemplo para testes: marcas reais, especificações ilustrativas. O Watcheship faz parte do erickmob.dev."
+}

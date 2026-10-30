@@ -1,0 +1,66 @@
+{
+  "brand": {
+    "name": "Watcheship",
+    "tagline": "Discover, rate and collect watches."
+  },
+  "owned": {
+    "title": "Watch box",
+    "subtitle": "The watches you own, the ones you want, and what you've worn.",
+    "add": "Add to watch box",
+    "remove": "Remove from watch box",
+    "inList_one": "In your watch box",
+    "inList_other": "In your watch box",
+    "showOnProfile": "Show my watch box on my profile",
+    "empty": "Your watch box is empty.",
+    "hiddenNote": "Your watch box is hidden from others. Turn it on in Watch box or Settings."
+  },
+  "attr": {
+    "brand": "Brand",
+    "model": "Model",
+    "reference": "Reference",
+    "movement": "Movement",
+    "caseSize": "Case size",
+    "caseMaterial": "Case material",
+    "waterResistance": "Water resistance",
+    "complications": "Complications",
+    "year": "Year"
+  },
+  "enum": {
+    "movement": {
+      "automatic": "Automatic",
+      "manual": "Manual wind",
+      "quartz": "Quartz",
+      "spring_drive": "Spring Drive",
+      "solar": "Solar"
+    }
+  },
+  "tag": {
+    "design": "Design",
+    "finishing": "Finishing",
+    "legibility": "Legibility",
+    "comfort": "Comfort",
+    "accuracy": "Accuracy",
+    "durability": "Durability",
+    "value": "Value",
+    "versatile": "Versatile",
+    "dressy": "Dressy",
+    "sporty": "Sporty",
+    "everyday": "Everyday",
+    "heirloom": "Heirloom"
+  },
+  "extra": {
+    "fullSet": {
+      "label": "Box & papers"
+    }
+  },
+  "experiencedOn": "Worn since",
+  "discover": {
+    "subtitle_one": "{{count}} watch in the catalog",
+    "subtitle_other": "{{count}} watches in the catalog",
+    "placeholder": "Search by name, brand, reference, material…"
+  },
+  "feed": {
+    "subtitle": "What people are wearing."
+  },
+  "credits": "Sample catalog for testing: real brands, illustrative specs. Watcheship is part of erickmob.dev."
+}
