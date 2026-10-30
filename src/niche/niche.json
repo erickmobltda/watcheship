@@ -1,0 +1,100 @@
+{
+  "niche": "watches",
+  "app": "watches",
+  "idPrefix": "t",
+  "attributes": [
+    {
+      "key": "brand",
+      "type": "text",
+      "searchable": true,
+      "facet": "select",
+      "showInSpecs": true,
+      "subtitle": true
+    },
+    {
+      "key": "model",
+      "type": "text",
+      "searchable": true,
+      "showInSpecs": true
+    },
+    {
+      "key": "reference",
+      "type": "text",
+      "searchable": true,
+      "showInSpecs": true,
+      "subtitle": true
+    },
+    {
+      "key": "movement",
+      "type": "enum",
+      "enumValues": [
+        "automatic",
+        "manual",
+        "quartz",
+        "spring_drive",
+        "solar"
+      ],
+      "facet": "chips",
+      "showInSpecs": true
+    },
+    {
+      "key": "caseSize",
+      "type": "number",
+      "unit": "mm",
+      "showInSpecs": true
+    },
+    {
+      "key": "caseMaterial",
+      "type": "text",
+      "searchable": true,
+      "facet": "select",
+      "showInSpecs": true
+    },
+    {
+      "key": "waterResistance",
+      "type": "number",
+      "unit": "m",
+      "showInSpecs": true
+    },
+    {
+      "key": "complications",
+      "type": "list",
+      "searchable": true,
+      "facet": "select",
+      "showInSpecs": true
+    },
+    {
+      "key": "year",
+      "type": "number",
+      "showInSpecs": true
+    }
+  ],
+  "ratingTags": [
+    "design",
+    "finishing",
+    "legibility",
+    "comfort",
+    "accuracy",
+    "durability",
+    "value",
+    "versatile",
+    "dressy",
+    "sporty",
+    "everyday",
+    "heirloom"
+  ],
+  "owned": {
+    "quantity": false,
+    "maxQuantity": 1,
+    "extras": [
+      {
+        "key": "fullSet",
+        "type": "boolean"
+      }
+    ]
+  },
+  "ageGate": false,
+  "image": {
+    "aspect": "1 / 1"
+  }
+}

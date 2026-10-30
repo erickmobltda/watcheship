@@ -1,0 +1,80 @@
+{
+  "collections/owned": {
+    "t4": {
+      "itemId": "t4",
+      "quantity": 1,
+      "visible": true,
+      "addedAt": "2026-07-14T19:00:00.000Z",
+      "updatedAt": "2026-07-14T19:00:00.000Z",
+      "extra": {
+        "fullSet": true
+      }
+    },
+    "t7": {
+      "itemId": "t7",
+      "quantity": 1,
+      "visible": true,
+      "addedAt": "2026-05-02T19:00:00.000Z",
+      "updatedAt": "2026-05-02T19:00:00.000Z",
+      "extra": {
+        "fullSet": false
+      }
+    },
+    "t8": {
+      "itemId": "t8",
+      "quantity": 1,
+      "visible": true,
+      "addedAt": "2026-10-01T19:00:00.000Z",
+      "updatedAt": "2026-10-01T19:00:00.000Z",
+      "extra": {
+        "fullSet": true
+      }
+    }
+  },
+  "collections/wishlist": {
+    "t2": {
+      "itemId": "t2",
+      "visible": true,
+      "addedAt": "2026-10-05T19:00:00.000Z"
+    },
+    "t6": {
+      "itemId": "t6",
+      "visible": true,
+      "addedAt": "2026-10-18T19:00:00.000Z"
+    }
+  },
+  "users/ratings": {
+    "t4": {
+      "itemId": "t4",
+      "stars": 4.5,
+      "tags": [
+        "design",
+        "comfort",
+        "versatile"
+      ],
+      "notes": "Wears smaller than it looks. Goes with everything.",
+      "experiencedOn": "2026-07-14"
+    },
+    "t7": {
+      "itemId": "t7",
+      "stars": 4,
+      "tags": [
+        "value",
+        "durability",
+        "everyday"
+      ],
+      "notes": "Indestructible and costs almost nothing.",
+      "experiencedOn": "2026-05-02"
+    },
+    "t8": {
+      "itemId": "t8",
+      "stars": 4,
+      "tags": [
+        "design",
+        "finishing"
+      ],
+      "notes": "",
+      "experiencedOn": "2026-10-01"
+    }
+  }
+}
