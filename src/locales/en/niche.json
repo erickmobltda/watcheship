@@ -12,7 +12,10 @@
     "inList_other": "In your watch box",
     "showOnProfile": "Show my watch box on my profile",
     "empty": "Your watch box is empty.",
-    "hiddenNote": "Your watch box is hidden from others. Turn it on in Watch box or Settings."
+    "hiddenNote": "Your watch box is hidden from others. Turn it on in Watch box or Settings.",
+    "statCount_one": "Watch in the box",
+    "statCount_other": "Watches in the box",
+    "searchPlaceholder": "Search your watch box: name, brand, model…"
   },
   "attr": {
     "brand": "Brand",

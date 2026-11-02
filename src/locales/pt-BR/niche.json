@@ -12,7 +12,10 @@
     "inList_other": "Na sua caixa",
     "showOnProfile": "Mostrar minha caixa de relógios no perfil",
     "empty": "Sua caixa de relógios está vazia.",
-    "hiddenNote": "Sua caixa de relógios está oculta para os outros. Ative em Caixa de relógios ou Configurações."
+    "hiddenNote": "Sua caixa de relógios está oculta para os outros. Ative em Caixa de relógios ou Configurações.",
+    "statCount_one": "Relógio na caixa",
+    "statCount_other": "Relógios na caixa",
+    "searchPlaceholder": "Buscar na caixa: nome, marca, modelo…"
   },
   "attr": {
     "brand": "Marca",
