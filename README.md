@@ -9,7 +9,7 @@
 
 ## Features
 
-- **Discover:** the whole catalog (20 sample watches for now) with accent-insensitive search and filters by movement, brand, case material and complications. Filters live in the URL.
+- **Discover:** the whole catalog (about 23,000 references) with accent-insensitive search and filters by movement, gender, brand, case material, dial, strap and complications. Filters live in the URL.
 - **Item page:** specs, community average, everyone's ratings.
   - **Own it** goes in your *Watch box*, with box & papers.
   - **Wish it** goes on your wishlist.
@@ -26,8 +26,13 @@
 
 - **Front:** React 18, Vite 5, TypeScript (strict), Tailwind, TanStack Query, i18next (`core` + `niche` namespaces).
 - **Auth + DB:** Firebase Auth and Firestore in the shared `erickmob-apps` project, under `apps/watches/`. The rules live in [erickmob-api/firebase](https://github.com/erickmobltda/erickmob-api/tree/main/firebase) (`tests/collector.cases.js`).
-- **Catalog:** a static `public/catalog.json` built from `data/sample.json` by `npm run catalog`. Ids in `data/ids.json` never change. Search runs in the browser and costs no Firestore reads.
-- **Images:** none yet; every item shows the watch-face placeholder (`src/niche/Placeholder.tsx`).
+- **Catalog:** a static `public/catalog.json` built by `npm run catalog` from `data/items.json`, which `scripts/niche/build_items.py` makes from three Kaggle datasets:
+  - *Timepiece Treasures* (`yoerireumkens`, CC0): 163k market listings, grouped into one item per brand + reference;
+  - *Luxury Watch Listings* (`philmorekoung11`): case size, gender and year, matched by reference;
+  - *Luxury Watches Price* (`rkiattisak`, CC BY 4.0): typical water resistance and size per model family, only where nothing better is known;
+
+  plus `data/sample.json`, the first 20 items, kept so `t1`…`t20` never change. Specs are the most common values across listings, not the maker's. Ids in `data/ids.json` never change. Search runs in the browser and costs no Firestore reads.
+- **Images:** one Wikimedia Commons photo per model family (e.g. every Submariner shows the same Submariner), found through Wikidata by `scripts/niche/fetch_images.py`. Each photo's author and licence are shown on the item page (`data/image_credits.json`). Photos are served from the Cloudflare R2 bucket `erickmob-cdn` at `https://cdn.erickmob.dev/watcheship/{n}.webp`. Other watches show the watch-face placeholder (`src/niche/Placeholder.tsx`).
 - **Hosting:** GitHub Pages via `.github/workflows/pages.yml` (`actions/deploy-pages`).
 
 ### Firestore paths (`apps/watches/…`)
@@ -79,7 +84,18 @@ Collaborators get the same four values from Erick as a `.env.local` file; they a
 npm install
 npm run dev                      # against production Firebase (needs .env.local, see .env.example)
 npm run typecheck && npm run lint && npm test && npm run i18n:check && node scripts/check-core.mjs && npm run build
-npm run catalog                  # rebuild public/catalog.json after editing data/sample.json
+npm run catalog                  # rebuild public/catalog.json from data/items.json
+python3 -m unittest discover -s scripts/niche   # tests of the catalog scripts
+```
+
+Rebuild the catalog from its sources:
+
+```bash
+bash scripts/niche/fetch_sources.sh      # downloads to data/raw/ (git-ignored), checks sha256
+python3 scripts/niche/build_items.py     # → data/items.json
+/tmp/img/bin/python scripts/niche/fetch_images.py   # optional, needs Pillow: photos → data/raw/images/
+python3 scripts/niche/build_items.py && npm run catalog
+bash scripts/niche/upload_images.sh      # owner only: photos → R2 bucket erickmob-cdn (cdn.erickmob.dev)
 ```
 
 The emulators need the rules file from the private erickmob-api repo, so this part is **owner only**. To run against the emulators:
