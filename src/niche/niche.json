@@ -38,6 +38,16 @@
       "showInSpecs": true
     },
     {
+      "key": "gender",
+      "type": "enum",
+      "enumValues": [
+        "men",
+        "women"
+      ],
+      "facet": "chips",
+      "showInSpecs": true
+    },
+    {
       "key": "caseSize",
       "type": "number",
       "unit": "mm",
@@ -45,8 +55,106 @@
     },
     {
       "key": "caseMaterial",
-      "type": "text",
-      "searchable": true,
+      "type": "enum",
+      "enumValues": [
+        "steel",
+        "rose_gold",
+        "yellow_gold",
+        "titanium",
+        "gold_steel",
+        "white_gold",
+        "ceramic",
+        "plastic",
+        "platinum",
+        "carbon",
+        "bronze",
+        "aluminium",
+        "silver",
+        "tantalum",
+        "palladium",
+        "tungsten"
+      ],
+      "facet": "select",
+      "showInSpecs": true
+    },
+    {
+      "key": "dialColor",
+      "type": "enum",
+      "enumValues": [
+        "black",
+        "silver",
+        "blue",
+        "white",
+        "gray",
+        "green",
+        "transparent",
+        "champagne",
+        "brown",
+        "gold",
+        "pearl",
+        "red",
+        "pink",
+        "yellow",
+        "solid_silver",
+        "orange",
+        "bronze",
+        "purple",
+        "solid_gold",
+        "bordeaux"
+      ],
+      "facet": "select",
+      "showInSpecs": true
+    },
+    {
+      "key": "bezel",
+      "type": "enum",
+      "enumValues": [
+        "steel",
+        "rose_gold",
+        "yellow_gold",
+        "ceramic",
+        "white_gold",
+        "titanium",
+        "gold_steel",
+        "aluminium",
+        "platinum",
+        "carbon",
+        "plastic",
+        "bronze",
+        "silver",
+        "tantalum",
+        "tungsten",
+        "palladium"
+      ],
+      "showInSpecs": true
+    },
+    {
+      "key": "bracelet",
+      "type": "enum",
+      "enumValues": [
+        "steel",
+        "leather",
+        "crocodile_leather",
+        "rubber",
+        "gold_steel",
+        "textile",
+        "yellow_gold",
+        "titanium",
+        "plastic",
+        "cow_leather",
+        "rose_gold",
+        "white_gold",
+        "ceramic",
+        "silicone",
+        "platinum",
+        "ostrich_leather",
+        "satin",
+        "reptile_leather",
+        "snake_leather",
+        "silver",
+        "shark_leather",
+        "aluminium"
+      ],
       "facet": "select",
       "showInSpecs": true
     },
@@ -59,7 +167,20 @@
     {
       "key": "complications",
       "type": "list",
-      "searchable": true,
+      "enumValues": [
+        "chronograph",
+        "date",
+        "perpetual_calendar",
+        "gmt",
+        "day_date",
+        "annual_calendar",
+        "moonphase",
+        "world_time",
+        "tourbillon",
+        "alarm",
+        "power_reserve",
+        "minute_repeater"
+      ],
       "facet": "select",
       "showInSpecs": true
     },
@@ -95,6 +216,7 @@
   },
   "ageGate": false,
   "image": {
-    "aspect": "1 / 1"
+    "aspect": "1 / 1",
+    "base": "https://cdn.erickmob.dev/watcheship"
   }
 }
