@@ -15,7 +15,11 @@
     "hiddenNote": "Sua caixa de relógios está oculta para os outros. Ative em Caixa de relógios ou Configurações.",
     "statCount_one": "Relógio na caixa",
     "statCount_other": "Relógios na caixa",
-    "searchPlaceholder": "Buscar na caixa: nome, marca, modelo…"
+    "searchPlaceholder": "Buscar na caixa: nome, marca, modelo…",
+    "popularity_one": "{{count}} pessoa tem na caixa de relógios",
+    "popularity_other": "{{count}} pessoas têm na caixa de relógios",
+    "popularityNone": "Ainda sem dados de caixas de relógios",
+    "sortMost": "Mais nas caixas de relógios"
   },
   "attr": {
     "brand": "Marca",
