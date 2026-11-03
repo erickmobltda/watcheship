@@ -19,7 +19,8 @@
     "popularity_one": "{{count}} person has it in their watch box",
     "popularity_other": "{{count}} people have it in their watch boxes",
     "popularityNone": "No watch box data yet",
-    "sortMost": "Most in watch boxes"
+    "sortMost": "Most in watch boxes",
+    "activityChart": "Added to and removed from the watch box"
   },
   "attr": {
     "brand": "Brand",
