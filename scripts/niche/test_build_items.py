@@ -27,6 +27,18 @@ class BuildItemsTest(unittest.TestCase):
         self.assertEqual(b.base_ref("Breitling", "AB0138211B1P1"), "AB0138")
         self.assertEqual(b.base_ref("Seiko", "SBDC061"), "SBDC061")
 
+    def test_model_line_and_its_size(self):
+        self.assertEqual(b.line_name("Datejust 41"), "Datejust")
+        self.assertEqual(b.line_name("Navitimer 01 (46 MM)"), "Navitimer 01")
+        self.assertEqual(b.line_name("5 Sports"), "5 Sports")
+        self.assertEqual(b.size_of_ref({"model": "Datejust 41", "caseSize": 36.0}), 41)
+        self.assertEqual(b.size_of_ref({"model": "Daytona", "caseSize": 40.0}), 40)
+
+    def test_one_item_per_line_and_main_size(self):
+        names = {i["name"] for i in b.build()}
+        self.assertTrue({"Rolex Datejust 36 mm", "Rolex Datejust 41 mm"} <= names)
+        self.assertFalse(any(n.startswith("Rolex Datejust 116") for n in names))
+
     def test_every_key_is_unique_and_samples_keep_theirs(self):
         items = b.build()
         keys = [i["key"] for i in items]
