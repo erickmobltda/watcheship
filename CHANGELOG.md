@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-03 — One watch per model line
+
+**Why:** the catalog still listed the same watch many times, once per reference.
+
+- One watch per model line and main case size (e.g. "Rolex Datejust 41 mm"): about 2,100 watches instead of about 19,700. Every reference of the line is listed under "Other references" and found by search.
+
 ## 2026-11-03 — One watch per model
 
 **Why:** the first real catalog listed the same watch several times (seller notes in the reference, colour and strap variants).

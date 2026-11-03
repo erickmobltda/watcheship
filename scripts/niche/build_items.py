@@ -168,6 +168,7 @@ def treasures() -> dict[tuple[str, str], dict]:
             "year": None,
             # Other official references of this model (dial, strap); free text from listings is left out.
             "variants": sorted(v for v in variants if v != reference and re.fullmatch(r"[A-Z0-9][A-Z0-9.\-/]*", v)),
+            "listings": len(rows),
         }
     return items
 
@@ -264,7 +265,78 @@ def build() -> list[dict]:
     for item in out:
         if not item.pop("sample", False) and item["key"] in matched:
             item["key"] += "-2"
+    return collapse_lines(out, {s["key"] for s in samples.values()})
+
+
+def line_name(model: str) -> str:
+    """The model line without its size: "Datejust 36" and "Navitimer 01 (46 MM)" → "Datejust", "Navitimer 01"."""
+    model = re.sub(r"\s*\([^)]*\)", "", model or "")
+    model = re.sub(r"\s+[2-5]\d(?:\s*mm)?$", "", model, flags=re.I)
+    return re.sub(r"\s+", " ", model).strip()
+
+
+def size_of_ref(ref: dict) -> int | None:
+    """The case size, or the one in the model name ("Datejust 41", "Navitimer 01 (46 MM)")."""
+    m = re.search(r"\b([2-5]\d)(?:\s*mm)?\)?$", ref.get("model") or "", re.I)
+    if m:
+        return int(m.group(1))
+    return round(ref["caseSize"]) if ref.get("caseSize") else None
+
+
+def collapse_lines(refs: list[dict], sample_keys: set[str]) -> list[dict]:
+    """One item per brand + model line + main case size. Its references become "Other references".
+
+    Sizes come from listings and are noisy, so a line is split only by its main sizes (at least 3 references
+    and 10% of the line); other sizes, and references with no size, join the nearest main size."""
+    lines: dict[tuple[str, str], list[dict]] = defaultdict(list)
+    for ref in refs:
+        lines[(compact(ref["brand"]), compact(line_name(ref["model"])))].append(ref)
+    out = []
+    for members in lines.values():
+        sizes = Counter(s for s in map(size_of_ref, members) if s)
+        known = sum(sizes.values())
+        main = [s for s, n in sizes.items() if n >= 3 and n >= 0.1 * known] or [s for s, _ in sizes.most_common(1)]
+        default = sizes.most_common(1)[0][0] if sizes else None
+        nearest = lambda s: min(main, key=lambda m: (abs(m - s), -sizes[m]))  # noqa: E731
+        groups: dict[int | None, list[dict]] = defaultdict(list)
+        for r in members:
+            size = size_of_ref(r) or default
+            groups[nearest(size) if size is not None else None].append(r)
+        for size, group in groups.items():
+            # Two hand-made samples in one group: each stays its own item, so its id is kept.
+            for sample in [r for r in group if r["key"] in sample_keys][1:]:
+                group.remove(sample)
+                out.append(merge_line([sample], size if len(groups) > 1 else None, sample_keys))
+            out.append(merge_line(group, size if len(groups) > 1 else None, sample_keys))
     return out
+
+
+def merge_line(group: list[dict], size: int | None, sample_keys: set[str]) -> dict:
+    top = max(group, key=lambda r: (r["key"] in sample_keys, r.get("listings", 0)))
+    col = lambda f: [r.get(f) for r in group]  # noqa: E731
+    model = most_common([line_name(m) for m in col("model")]) or top["model"]
+    sizes = Counter(r["caseSize"] for r in group if r.get("caseSize"))
+    references = [top["reference"]] + sorted(
+        {v for r in group for v in [r["reference"], *r.get("variants", [])]} - {top["reference"]})
+    name = " ".join(p for p in (top["brand"], model) if p) + (f" {size} mm" if size else "")
+    return {
+        "key": top["key"] if top["key"] in sample_keys else slug(name),
+        "name": name,
+        "brand": top["brand"],
+        "model": model,
+        "reference": top["reference"],
+        "variants": references[1:],
+        "movement": most_common(col("movement")) or "",
+        "caseSize": size or (sizes.most_common(1)[0][0] if sizes else None),
+        "caseMaterial": most_common(col("caseMaterial")) or "",
+        "waterResistance": most_common(col("waterResistance")),
+        "complications": top.get("complications", []),
+        "dialColor": most_common(col("dialColor")) or "",
+        "bracelet": most_common(col("bracelet")) or "",
+        "bezel": most_common(col("bezel")) or "",
+        "gender": most_common(col("gender")) or "",
+        "year": min((y for y in col("year") if y), default=None),
+    }
 
 
 def main():
