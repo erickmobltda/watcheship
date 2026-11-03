@@ -34,6 +34,16 @@ class BuildItemsTest(unittest.TestCase):
         self.assertEqual(b.size_of_ref({"model": "Datejust 41", "caseSize": 36.0}), 41)
         self.assertEqual(b.size_of_ref({"model": "Daytona", "caseSize": 40.0}), 40)
 
+    def test_collection_only_brands_take_the_line_from_the_reference(self):
+        self.assertEqual(b.ref_line("Casio", "GA-2100-1A1ER"), "GA-2100")
+        self.assertEqual(b.ref_line("Casio", "GR-B300-1A"), "GR-B300")
+        self.assertEqual(b.ref_line("Seiko", "SRPF67K1"), "SRPF67")
+        self.assertEqual(b.ref_line("Citizen", "NB6021-68L"), "NB6021")
+        self.assertIsNone(b.ref_line("Rolex", "126610LN"))
+
+    def test_hand_added_watches_are_in_the_catalog(self):
+        self.assertIn("casio-gr-b300-1a", {i["key"] for i in b.build()})
+
     def test_one_item_per_line_and_main_size(self):
         names = {i["name"] for i in b.build()}
         self.assertTrue({"Rolex Datejust 36 mm", "Rolex Datejust 41 mm"} <= names)

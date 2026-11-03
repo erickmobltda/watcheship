@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-03 — G-Shock, Seiko and Citizen models are back
+
+**Why:** these brands' listings only name the collection, so the previous change made one "Casio G-Shock" out of 408 references.
+
+- Casio, Seiko, Grand Seiko and Citizen get one watch per model reference again ("Casio G-Shock GA-2100"): about 3,800 watches in all.
+- New `data/extra.json` for watches no dataset has; first one: Casio G-Shock Gravitymaster GR-B300-1A.
+
 ## 2026-11-03 — One watch per model line
 
 **Why:** the catalog still listed the same watch many times, once per reference.

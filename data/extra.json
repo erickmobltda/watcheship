@@ -1,0 +1,3 @@
+[
+  { "key": "casio-gr-b300-1a", "name": "Casio G-Shock Gravitymaster GR-B300-1A", "brand": "Casio", "model": "G-Shock Master of G Gravitymaster", "reference": "GR-B300-1A", "movement": "solar", "caseMaterial": "carbon", "waterResistance": 200, "complications": ["world_time", "alarm"], "dialColor": "black", "bracelet": "plastic" }
+]
