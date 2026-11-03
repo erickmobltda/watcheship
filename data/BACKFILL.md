@@ -3,7 +3,7 @@
 The first catalog had 20 hand-made sample watches. On 2026-11-03 it was replaced by about 23,300 references built from public datasets. The same day, references were merged twice to remove near-duplicates:
 
 1. Colour and strap variants were merged into one base reference (19,712 watches).
-2. References were merged into **one watch per model line and main case size**: "Rolex Datejust 36 mm" and "Rolex Datejust 41 mm", not 144 Datejust references. That leaves **2,131 watches**.
+2. References were merged into **one watch per model line and main case size**: "Rolex Datejust 36 mm" and "Rolex Datejust 41 mm", not 144 Datejust references. For Casio, Seiko, Grand Seiko and Citizen, whose listings only name the collection ("G-Shock", "Prospex"), the line comes from the reference instead ("Casio G-Shock GA-2100"). That leaves **3,821 watches**.
 
 This file explains where each fact comes from, how the data was merged, and how to rebuild it.
 
@@ -16,6 +16,7 @@ This file explains where each fact comes from, how the data was merged, and how 
 | [Luxury Watches Price](https://www.kaggle.com/datasets/rkiattisak/luxury-watches-price-dataset) (Kaggle, 507 rows) | Typical water resistance and case size per model family | CC BY 4.0, credited in Settings |
 | [Wikidata](https://www.wikidata.org) / [Wikimedia Commons](https://commons.wikimedia.org) | One photo per model family (e.g. Submariner) | Each photo's own CC licence; author and licence are shown on the item page |
 | `data/sample.json` | The first 20 items (`t1`…`t20`) | Our own |
+| `data/extra.json` | Watches added by hand because no dataset has them (e.g. Casio G-Shock Gravitymaster GR-B300-1A) | Our own |
 
 The listings were scraped from marketplaces (mostly Chrono24). Only facts are used (brand, reference, materials, sizes). The owner accepted the risk.
 
@@ -45,23 +46,24 @@ The listings were scraped from marketplaces (mostly Chrono24). Only facts are us
    - The name shows the size only when the line has more than one ("Rolex Datejust 41 mm", but "Rolex Explorer").
    - The watch shows its most listed reference as Reference, and every other reference of the line under "Other references".
    - Each spec takes its most common value across the merged references; the year is the earliest.
+   - **Exception, collection-only brands:** Casio, Seiko, Grand Seiko and Citizen listings give only the collection as the model (all 406 G-Shocks say "G-Shock"). Their line comes from the reference: Casio `GA-2100-1A1ER` → `GA-2100`, Seiko `SRPF67K1` → `SRPF67`, Citizen `NB6021-68L` → `NB6021`; a Grand Seiko reference is its own line. The name is collection + line ("Casio G-Shock GA-2100", "Seiko Prospex SPB051").
 6. **Complications** come from the model name (Chronograph, GMT, Day-Date, Perpetual Calendar…).
 7. **Case size, gender and year** come from the second listing set, matched by brand + base reference. The year is the earliest one seen at least twice.
 8. **Family defaults:** water resistance, and case size when missing, come from the third dataset, matched by brand and the start of the model name. They are typical values, not the reference's own.
-9. **The 20 samples keep their ids.** The sample's hand-entered facts win where they exist. Two samples never merge into one watch.
+9. **The 20 samples keep their ids.** The sample's hand-entered facts win where they exist. Two samples never merge into one watch. Watches in `data/extra.json` are handled the same way: to add a missing watch, add a line there with the same fields as `data/sample.json`.
 10. **Photos:** `scripts/niche/fetch_images.py` finds Wikidata watch models with a photo (37 families, 21 photos) and shows a family's photo on every reference whose model starts with that family name.
 
 ## Result
 
 | | |
 |---|---|
-| Watches | 2,131, from 159 brands |
-| References behind them | about 19,700 base references (23,842 references listed under "Other references") |
-| With case size | 1,178 |
-| With water resistance | 516 |
-| With gender / year | 1,021 / 1,055 |
-| With complications | 402 |
-| With a family photo | 171 |
+| Watches | 3,821, from 159 brands |
+| References behind them | about 19,700 base references (22,153 listed under "Other references") |
+| With case size | 2,090 |
+| With water resistance | 966 |
+| With gender / year | 1,765 / 1,643 |
+| With complications | 533 |
+| With a family photo | 571 |
 
 ## Known limits
 

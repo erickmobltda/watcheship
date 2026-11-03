@@ -9,7 +9,7 @@
 
 ## Features
 
-- **Discover:** the whole catalog (about 2,100 watches, one per model line and size) with accent-insensitive search and filters by movement, gender, brand, case material, dial, strap and complications. Filters live in the URL.
+- **Discover:** the whole catalog (about 3,800 watches, one per model line and size) with accent-insensitive search and filters by movement, gender, brand, case material, dial, strap and complications. Filters live in the URL.
 - **Item page:** specs, community average, everyone's ratings.
   - **Own it** goes in your *Watch box*, with box & papers.
   - **Wish it** goes on your wishlist.
@@ -31,7 +31,7 @@
   - *Luxury Watch Listings* (`philmorekoung11`): case size, gender and year, matched by reference;
   - *Luxury Watches Price* (`rkiattisak`, CC BY 4.0): typical water resistance and size per model family, only where nothing better is known;
 
-  plus `data/sample.json`, the first 20 items, kept so `t1`…`t20` never change. Specs are the most common values across listings, not the maker's. Ids in `data/ids.json` never change. Search runs in the browser and costs no Firestore reads.
+  plus `data/sample.json`, the first 20 items, kept so `t1`…`t20` never change, and `data/extra.json`, watches added by hand because no dataset has them. Specs are the most common values across listings, not the maker's. Ids in `data/ids.json` never change. Search runs in the browser and costs no Firestore reads.
 - **Images:** one Wikimedia Commons photo per model family (e.g. every Submariner shows the same Submariner), found through Wikidata by `scripts/niche/fetch_images.py`. Each photo's author and licence are shown on the item page (`data/image_credits.json`). Photos are served from the Cloudflare R2 bucket `erickmob-cdn` at `https://cdn.erickmob.dev/watcheship/{n}.webp`. Other watches show the watch-face placeholder (`src/niche/Placeholder.tsx`).
 - **Hosting:** GitHub Pages via `.github/workflows/pages.yml` (`actions/deploy-pages`).
 

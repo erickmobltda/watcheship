@@ -10,6 +10,7 @@ Sources (bash scripts/niche/fetch_sources.sh downloads them to data/raw/):
   Luxury Watches Price     typical specs per model family (CC BY 4.0, rkiattisak): water
                            resistance and case size, only where the listings have none.
   data/sample.json         the first 20 items (t1..t20): kept, so no rating or collection loses its item.
+  data/extra.json          watches added by hand because no dataset has them.
 
 Usage: bash scripts/niche/fetch_sources.sh && python3 scripts/niche/build_items.py && npm run catalog
 """
@@ -242,8 +243,9 @@ def from_sample(sample: dict) -> dict:
 def build() -> list[dict]:
     items = treasures()
     print(f"references {len(items)} · with listing specs {add_listings(items)} · with family specs {add_families(items)}")
-    samples = {(compact(s["brand"]), compact(s["reference"])): from_sample(s)
-               for s in json.loads((ROOT / "data/sample.json").read_text())}
+    # The 20 first samples, plus watches added by hand because no dataset has them (data/extra.json).
+    hand_made = json.loads((ROOT / "data/sample.json").read_text()) + json.loads((ROOT / "data/extra.json").read_text())
+    samples = {(compact(s["brand"]), compact(s["reference"])): from_sample(s) for s in hand_made}
     by_key = {item["key"]: item for item in items.values()}
     matched = set()
     for (brand, _), sample in samples.items():
@@ -283,16 +285,40 @@ def size_of_ref(ref: dict) -> int | None:
     return round(ref["caseSize"]) if ref.get("caseSize") else None
 
 
+def ref_line(brand: str, ref: str) -> str | None:
+    """For brands whose listings only name the collection ("G-Shock", "Prospex"), the line comes from the
+    reference: Casio "GA-2100-1A1ER" → "GA-2100", Seiko "SRPF67K1" → "SRPF67", Citizen "NB6021-68L" → "NB6021"."""
+    b = compact(brand)
+    if b == "casio":
+        m = re.match(r"[A-Z]+-?[A-Z]*\d+", ref)
+        return m.group(0) if m else ref
+    if b == "seiko":
+        return re.sub(r"[JKP]\d?$", "", ref)
+    if b == "citizen":
+        return ref.split("-")[0]
+    if b == "grandseiko":
+        return ref
+    return None
+
+
 def collapse_lines(refs: list[dict], sample_keys: set[str]) -> list[dict]:
     """One item per brand + model line + main case size. Its references become "Other references".
 
     Sizes come from listings and are noisy, so a line is split only by its main sizes (at least 3 references
     and 10% of the line); other sizes, and references with no size, join the nearest main size."""
     lines: dict[tuple[str, str], list[dict]] = defaultdict(list)
-    for ref in refs:
-        lines[(compact(ref["brand"]), compact(line_name(ref["model"])))].append(ref)
     out = []
-    for members in lines.values():
+    for ref in refs:
+        by_ref = ref_line(ref["brand"], ref["reference"])
+        if by_ref:
+            ref["line"] = by_ref
+            lines[(compact(ref["brand"]), "ref:" + compact(by_ref))].append(ref)
+        else:
+            lines[(compact(ref["brand"]), compact(line_name(ref["model"])))].append(ref)
+    for (_, line), members in lines.items():
+        if line.startswith("ref:"):  # the reference already fixes the size
+            out.append(merge_line(members, None, sample_keys))
+            continue
         sizes = Counter(s for s in map(size_of_ref, members) if s)
         known = sum(sizes.values())
         main = [s for s, n in sizes.items() if n >= 3 and n >= 0.1 * known] or [s for s, _ in sizes.most_common(1)]
@@ -318,7 +344,7 @@ def merge_line(group: list[dict], size: int | None, sample_keys: set[str]) -> di
     sizes = Counter(r["caseSize"] for r in group if r.get("caseSize"))
     references = [top["reference"]] + sorted(
         {v for r in group for v in [r["reference"], *r.get("variants", [])]} - {top["reference"]})
-    name = " ".join(p for p in (top["brand"], model) if p) + (f" {size} mm" if size else "")
+    name = " ".join(p for p in (top["brand"], model, top.get("line")) if p) + (f" {size} mm" if size else "")
     return {
         "key": top["key"] if top["key"] in sample_keys else slug(name),
         "name": name,
