@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-03 — One watch per model
+
+**Why:** the first real catalog listed the same watch several times (seller notes in the reference, colour and strap variants).
+
+- Colour and strap variants are merged into one watch per base reference: about 19,700 watches instead of about 23,300. The variant references are listed as "Other references" and found by search.
+- How the catalog was built: `data/BACKFILL.md`.
+
 ## 2026-11-03 — Real catalog
 
 **Why:** replace the 20 samples with a real catalog built from public datasets.

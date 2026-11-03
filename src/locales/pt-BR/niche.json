@@ -26,6 +26,7 @@
     "brand": "Marca",
     "model": "Modelo",
     "reference": "Referência",
+    "variants": "Outras referências",
     "movement": "Movimento",
     "gender": "Gênero",
     "caseSize": "Tamanho da caixa",

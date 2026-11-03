@@ -9,7 +9,7 @@
 
 ## Features
 
-- **Discover:** the whole catalog (about 23,000 references) with accent-insensitive search and filters by movement, gender, brand, case material, dial, strap and complications. Filters live in the URL.
+- **Discover:** the whole catalog (about 19,700 watches, one per model reference) with accent-insensitive search and filters by movement, gender, brand, case material, dial, strap and complications. Filters live in the URL.
 - **Item page:** specs, community average, everyone's ratings.
   - **Own it** goes in your *Watch box*, with box & papers.
   - **Wish it** goes on your wishlist.
@@ -26,8 +26,8 @@
 
 - **Front:** React 18, Vite 5, TypeScript (strict), Tailwind, TanStack Query, i18next (`core` + `niche` namespaces).
 - **Auth + DB:** Firebase Auth and Firestore in the shared `erickmob-apps` project, under `apps/watches/`. The rules live in [erickmob-api/firebase](https://github.com/erickmobltda/erickmob-api/tree/main/firebase) (`tests/collector.cases.js`).
-- **Catalog:** a static `public/catalog.json` built by `npm run catalog` from `data/items.json`, which `scripts/niche/build_items.py` makes from three Kaggle datasets:
-  - *Timepiece Treasures* (`yoerireumkens`, CC0): 163k market listings, grouped into one item per brand + reference;
+- **Catalog:** a static `public/catalog.json` built by `npm run catalog` from `data/items.json`. **Where the data comes from and how it was merged: [data/BACKFILL.md](data/BACKFILL.md).** `scripts/niche/build_items.py` makes it from three Kaggle datasets:
+  - *Timepiece Treasures* (`yoerireumkens`, CC0): 163k market listings, grouped into one item per brand + base reference (colour and strap variants merged, kept as "Other references");
   - *Luxury Watch Listings* (`philmorekoung11`): case size, gender and year, matched by reference;
   - *Luxury Watches Price* (`rkiattisak`, CC BY 4.0): typical water resistance and size per model family, only where nothing better is known;
 

@@ -26,6 +26,7 @@
     "brand": "Brand",
     "model": "Model",
     "reference": "Reference",
+    "variants": "Other references",
     "movement": "Movement",
     "gender": "Gender",
     "caseSize": "Case size",

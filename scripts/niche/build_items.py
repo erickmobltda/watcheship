@@ -76,7 +76,37 @@ def clean_ref(ref: str) -> str:
     ref = re.sub(r"\s+", " ", (ref or "").strip()).upper()
     # Long or wordy "references" are listing titles typed into the wrong field.
     junk = len(compact(ref)) < 3 or len(ref) > 40 or len(re.findall(r"[A-Z]{4,}", ref)) > 1 or JUNK_REF.match(ref)
-    return "" if junk else ref
+    # Seller notes after the reference: "116500LN BLACK", "116500LN -- 05-2017", "116503 FULL SET".
+    ref = re.split(r"\s*--|\s+(?=(?:[A-Z]{3,}|LC|EU|NG)\b)|\s*\(", ref)[0].strip(" -")
+    ref = re.sub(r"\s*([.\-/])\s*", r"\1", ref)  # "5167R- 001" → "5167R-001"
+    return "" if junk or len(compact(ref)) < 3 else ref
+
+
+def base_ref(brand: str, ref: str) -> str:
+    """The model's reference without its dial/strap variant code, so colour variants become one item."""
+    b = compact(brand)
+    if b in ("rolex", "tudor"):
+        m = re.match(r"M?\d{4,6}[A-Z]*", ref)  # 116500LN-0001, 116500LN 0523, M79030N-0001
+        return m.group(0) if m else ref
+    if b == "patekphilippe":
+        return re.sub(r"-\d{3}$", "", ref)  # 5196G-001
+    if b in ("audemarspiguet", "tagheuer"):
+        return re.split(r"[.\-]", ref)[0]  # 25721ST.OO.1000ST.01, CBS2210.FC6534, WAZ111A-BA0875
+    if b == "zenith":
+        return ref.split("/")[0]  # 03.3100.3600/69.M3100
+    if b == "omega" and ref.count(".") >= 4:
+        return ".".join(ref.split(".")[:4])  # 210.30.42.20.01.001
+    if b in ("tissot", "longines") and ref.count(".") >= 3:
+        return ".".join(ref.split(".")[:3])  # T137.407.11.041.00, L3.810.4.53.0
+    if b == "hublot" and ref.count(".") >= 3:
+        return ".".join(ref.split(".")[:2])  # 511.NO.1181.RX
+    if b == "breitling":
+        m = re.match(r"[A-Z]{2}\d{4}|[A-Z]\d{5}", ref)  # AB0138211B1P1, A13356
+        return m.group(0) if m else ref
+    if b == "iwc":
+        m = re.match(r"IW\d{4}", ref)  # IW371605
+        return m.group(0) if m else ref
+    return ref
 
 
 def ref_prefixes(ref: str) -> list[str]:
@@ -104,16 +134,24 @@ def treasures() -> dict[tuple[str, str], dict]:
         if not ref or not row["Brand"].strip() or line in seen:
             continue
         seen.add(line)
-        groups[(compact(row["Brand"]), compact(ref))].append({**row, "Reference": ref})
+        groups[(compact(row["Brand"]), compact(base_ref(row["Brand"], ref)))].append({**row, "Reference": ref})
+    # A Rolex/Tudor reference written without its letters ("116500") joins its most listed lettered one ("116500LN").
+    for (brand, ref) in [k for k in groups if k[0] in ("rolex", "tudor") and k[1].isdigit()]:
+        lettered = [k for k in groups if k[0] == brand and k[1] != ref and re.fullmatch(rf"m?{ref}[a-z]+", k[1])]
+        if lettered:
+            groups[max(lettered, key=lambda k: len(groups[k]))] += groups.pop((brand, ref))
 
     items = {}
     for key, rows in groups.items():
         col = lambda c: [r[c].strip() for r in rows]  # noqa: E731
         model = most_common(col("Model")) or ""
         brand = most_common(col("Brand"))
-        reference = most_common(col("Reference"))
+        variants = Counter(col("Reference"))
+        # The key stays that of the most listed variant, so its id (from the first catalog) is kept.
+        top = variants.most_common(1)[0][0]
+        reference = base_ref(brand, top)
         items[key] = {
-            "key": slug(f"{brand}-{reference}"),
+            "key": slug(f"{brand}-{top}"),
             "name": " ".join(p for p in (brand, model, reference) if p),
             "brand": brand,
             "model": model,
@@ -128,6 +166,8 @@ def treasures() -> dict[tuple[str, str], dict]:
             "bezel": value_key(most_common(col("Lunette Material")) or ""),
             "gender": "",
             "year": None,
+            # Other official references of this model (dial, strap); free text from listings is left out.
+            "variants": sorted(v for v in variants if v != reference and re.fullmatch(r"[A-Z0-9][A-Z0-9.\-/]*", v)),
         }
     return items
 
@@ -149,7 +189,8 @@ def add_listings(items: dict) -> int:
         ref, brand = clean_ref(row["ref"]), compact(row["brand"])
         if not ref:
             continue
-        key = next(((brand, p) for p in ref_prefixes(ref) if (brand, p) in items), None)
+        options = [compact(base_ref(row["brand"], ref)), *ref_prefixes(ref)]
+        key = next(((brand, p) for p in options if (brand, p) in items), None)
         if key:
             found[key].append(row)
     for key, rows in found.items():

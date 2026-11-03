@@ -25,6 +25,12 @@
       "subtitle": true
     },
     {
+      "key": "variants",
+      "type": "list",
+      "searchable": true,
+      "showInSpecs": true
+    },
+    {
       "key": "movement",
       "type": "enum",
       "enumValues": [
