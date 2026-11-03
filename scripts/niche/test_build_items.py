@@ -11,6 +11,28 @@ class BuildItemsTest(unittest.TestCase):
         self.assertEqual(b.clean_ref("Unknown"), "")
         self.assertEqual(b.clean_ref("Rolex Daytona Oysterflex 116515LN Rosegold"), "")
 
+    def test_seller_notes_are_cut_from_the_reference(self):
+        self.assertEqual(b.clean_ref("116500LN -- 05-2017"), "116500LN")
+        self.assertEqual(b.clean_ref("116503 FULL SET"), "116503")
+        self.assertEqual(b.clean_ref("126610LV-MK II (NEW"), "126610LV-MK II")
+        self.assertEqual(b.clean_ref("5167R- 001"), "5167R-001")
+
+    def test_colour_and_strap_variants_share_a_base_reference(self):
+        self.assertEqual(b.base_ref("Rolex", "116500LN-0001"), "116500LN")
+        self.assertEqual(b.base_ref("Rolex", "116500LN 0523"), "116500LN")
+        self.assertEqual(b.base_ref("Omega", "210.30.42.20.01.001"), "210.30.42.20")
+        self.assertEqual(b.base_ref("Audemars Piguet", "25721ST.OO.1000ST.01"), "25721ST")
+        self.assertEqual(b.base_ref("TAG Heuer", "WAZ111A-BA0875"), "WAZ111A")
+        self.assertEqual(b.base_ref("Patek Philippe", "5196G-001"), "5196G")
+        self.assertEqual(b.base_ref("Breitling", "AB0138211B1P1"), "AB0138")
+        self.assertEqual(b.base_ref("Seiko", "SBDC061"), "SBDC061")
+
+    def test_every_key_is_unique_and_samples_keep_theirs(self):
+        items = b.build()
+        keys = [i["key"] for i in items]
+        self.assertEqual(len(keys), len(set(keys)))
+        self.assertTrue({"rolex-126610ln", "omega-310-30-42-50-01-001", "casio-f91w"} <= set(keys))
+
     def test_long_reference_matches_its_leading_parts(self):
         self.assertEqual(b.ref_prefixes("15300ST.OO.1220ST.02"), ["15300stoo1220st02", "15300stoo1220st", "15300stoo", "15300st"])
 
